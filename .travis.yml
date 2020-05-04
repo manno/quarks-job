@@ -17,15 +17,19 @@ stages:
   - unit
   - test
 
+# avoid too many builds, for PRs this is also the base branch
+branches:
+  only:
+  - master
+
 before_script:
   - echo "+++ Before matrix test"
 script:
-  - echo "+++ Running $TRAVIS_PULL_REQUEST_SLUG vs $TRAVIS_REQUEST_SLUG"
+  - echo "+++ Running '$TRAVIS_PULL_REQUEST_SLUG' vs '$TRAVIS_REPO_SLUG'"
 
 jobs:
   include:
     - stage: unit
-      if: branch = master OR type = pull_request
       services: []
       before_script:
         - echo "+++ Before include (no matrix) step"
