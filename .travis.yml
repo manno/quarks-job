@@ -18,9 +18,9 @@ stages:
   - test
 
 before_script:
-  - /bin/true
+  - echo "+++ Before matrix test"
 script:
-  - /bin/true
+  - echo "+++ Running $TRAVIS_PULL_REQUEST_SLUG vs $TRAVIS_REQUEST_SLUG"
 
 jobs:
   include:
@@ -28,10 +28,10 @@ jobs:
       if: branch = master OR type = pull_request
       services: []
       before_script:
-        - echo "Linting"
-      script: /bin/true
+        - echo "+++ Before include (no matrix) step"
+      script: echo "+++ Linting"
       name: lint
-    - script: echo "Unit"
+    - script: echo "+++ Unit"
       services: []
       before_script: []
       name: unit
@@ -42,14 +42,14 @@ jobs:
       install: []
       before_script: []
       before_deploy:
+        - echo "+++ Before deploy"
         - git fetch --unshallow
         - git rev-list --first-parent --count HEAD
-        - /bin/true
-      script: echo "Publishing image/chart"
+      script: echo "+++ Publishing image/chart for $TRAVIS_PULL_REQUEST"
       deploy:
         provider: script
         script:
-          echo "deploy make publish-image deploy-helm-repo..."
+          echo "+++ Deploy make publish-image deploy-helm-repo..."
         skip_cleanup: true
         on:
           branch: master
